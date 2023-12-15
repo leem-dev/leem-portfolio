@@ -68,7 +68,15 @@ const Header = () => {
           </nav>
           <nav>
             <HStack spacing={8}>
-              {/* Add links to Projects and Contact me section */}
+              <a href="">
+                <FontAwesomeIcon icon="faEnvelope" size="2x" />
+              </a>
+              <a href="">
+                <FontAwesomeIcon icon="faEnvelope" size="2x" />
+              </a>
+              <a href="">
+                <FontAwesomeIcon icon="faEnvelope" size="2x" />
+              </a>
             </HStack>
           </nav>
         </HStack>
