@@ -8,6 +8,7 @@ import {
   faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
 import { Box, HStack } from "@chakra-ui/react";
+import { useState } from "react";
 
 const socials = [
   {
@@ -33,19 +34,30 @@ const socials = [
 ];
 
 const Header = () => {
-  const handleClick = (anchor) => () => {
-    const id = `${anchor}-section`;
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
+  const headerRef = useRef(null);
+  const [previousScroll, setPreviousScroll] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      let currentScroll = window.scrollY;
+
+      if (currentScroll > previousScroll) {
+        headerRef.style.transform = "translateY(-200px)";
+      } else {
+        headerRef.style.transform = "translateY(0)";
+      }
+      setPreviousScroll(currentScroll);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [previousScroll]);
 
   return (
     <Box
+      ref={headerRef}
       position="fixed"
       top={0}
       left={0}
@@ -55,6 +67,7 @@ const Header = () => {
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
       backgroundColor="#18181b"
+      zIndex="1000"
     >
       <Box color="white" maxWidth="1280px" margin="0 auto">
         <HStack
@@ -79,16 +92,10 @@ const Header = () => {
           </nav>
           <nav>
             <HStack spacing={8}>
-              <a
-                href="/#projects-section"
-                onClick={() => handleClick(projects)}
-              >
+              <a href="/#projects" onClick={() => handleClick(projects)}>
                 Projects
               </a>
-              <a
-                href="/#contactme-section"
-                onClick={() => handleClick(contactme)}
-              >
+              <a href="/#contactme" onClick={() => handleClick(contactme)}>
                 Contact Me
               </a>
             </HStack>
