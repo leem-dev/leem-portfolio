@@ -34,26 +34,40 @@ const socials = [
 ];
 
 const Header = () => {
-  const headerRef = useRef(null);
-  const [previousScroll, setPreviousScroll] = useState(0);
+  const handleClick = (anchor) => () => {
+    const id = `${anchor}-section`;
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  };
+
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const prevScrollY = useRef(0);
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (Math.abs(currentScrollY - prevScrollY.current) < 10) {
+      return;
+    }
+
+    if (currentScrollY > prevScrollY.current) {
+      setIsHeaderVisible(false);
+    } else {
+      setIsHeaderVisible(true);
+    }
+
+    prevScrollY.current = currentScrollY;
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      let currentScroll = window.scrollY;
-
-      if (currentScroll > previousScroll) {
-        headerRef.style.transform = "translateY(-200px)";
-      } else {
-        headerRef.style.transform = "translateY(0)";
-      }
-      setPreviousScroll(currentScroll);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [previousScroll]);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <Box
