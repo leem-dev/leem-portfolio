@@ -4,10 +4,34 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 
 const Card = ({ title, description, imageSrc }) => {
-  // Implement the UI for the Card component according to the instructions.
-  // You should be able to implement the component with the elements imported above.
-  // Feel free to import other UI components from Chakra UI if you wish to.
-  return null;
+  
+
+  return (
+    <VStack
+      spacing="2"
+      borderRadius="lg"
+      maxW="md"
+      boxShadow="base"
+      align="start"
+      background="white"
+    >
+      <Image src={imageSrc} alt={title} borderRadius="lg" />
+      <VStack align="start" spacing="2" p="2">
+        <Heading as="h3" fontSize="17px" fontWeight="bold" color="black">
+          {title}
+        </Heading>
+        <Text color="black" fontWeight="400" fontSize="12px">
+          {description}
+        </Text>
+      </VStack>
+      <HStack spacing="2" p="2" alignItems="center">
+        <Text fontWeight="bold" color="black" fontSize="13px">
+          See more
+        </Text>
+        <FontAwesomeIcon icon={faArrowRight} width="10px" color="black" />
+      </HStack>
+    </VStack>
+  );
 };
 
 export default Card;
