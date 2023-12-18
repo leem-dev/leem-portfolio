@@ -34,40 +34,29 @@ const socials = [
 ];
 
 const Header = () => {
-  const handleClick = (anchor) => () => {
-    const id = `${anchor}-section`;
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  };
-
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const prevScrollY = useRef(0);
+  useEffect(() => {
+  let prevScrollPos = window.scrollY;
 
   const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-
-    if (Math.abs(currentScrollY - prevScrollY.current) < 10) {
+    const currentScrollPos = window.scrollY;
+    const headerElement = headerRef.current;
+    if (!headerElement) {
       return;
-    }
+    }
+    if (prevScrollPos > currentScrollPos) {
+      headerElement.style.transform = "translateY(0)";
+    } else {
+      headerElement.style.transform = "translateY(-200px)";
+    }
+    prevScrollPos = currentScrollPos;
+  }
 
-    if (currentScrollY > prevScrollY.current) {
-      setIsHeaderVisible(false);
-    } else {
-      setIsHeaderVisible(true);
-    }
+  window.addEventListener('scroll', handleScroll)
 
-    prevScrollY.current = currentScrollY;
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  return () => {
+    window.removeEventListener('scroll', handleScroll)
+  }
+}, []);
 
   return (
     <Box
